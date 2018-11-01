@@ -28,6 +28,10 @@ if (empty($conf) || ! is_object($conf))
 
 <!-- BEGIN PHP TEMPLATE -->
 
+<!--  Xav Modif ICONEO -->
+<div id="lastFactCreate"></div>
+<!-- Fin  Xav Modif ICONEO -->
+
 <?php
 
 global $user;
@@ -39,10 +43,25 @@ $linkedObjectBlock = $GLOBALS['linkedObjectBlock'];
 $langs->load("bills");
 
 $total=0; $ilink=0;
+// Xav Modif ICONEO
+$idContract = GETPOST('id','int');
+$lastId;
+$itIsAContract = strpos($_SERVER['PHP_SELF'], 'contrat');
+$k=0;
+// fin Xav Modif ICONEO
+
 foreach($linkedObjectBlock as $key => $objectlink)
 {
     $ilink++;
-
+    // Xav Modif ICONEO
+    if ($k==0) {
+        $lastId = $objectlink->id;
+        $k=1;
+    }
+   // echo "ICONEO :  ". $k . " FFF : " .$lastId;
+    $socId = $object->socid;
+    // fin Xav Modif ICONEO
+    
     $trclass='oddeven';
     if ($ilink == count($linkedObjectBlock) && empty($noMoreLinkedObjectBlockAfter) && count($linkedObjectBlock) <= 1) $trclass.=' liste_sub_total';
 ?>
@@ -70,6 +89,14 @@ foreach($linkedObjectBlock as $key => $objectlink)
     </tr>
 <?php
 }
+// Xav Modif ICONEO
+if ($itIsAContract !== false) { ?>
+<tr >
+    <td colspan="4" align="left">
+        <a href="<?php echo DOL_URL_ROOT.'/compta/facture.php?action=createLast&facid='.$lastId .'&socid='.$socId. '&origin=contrat&originid='.$idContract ?>"> --- Créer la facture suivante automatiquement ---</a></td>
+</tr>    
+<?php }
+// Xav Modif ICONEO
 if (count($linkedObjectBlock) > 1)
 {
     ?>
@@ -85,5 +112,11 @@ if (count($linkedObjectBlock) > 1)
     <?php
 }
 ?>
-
+<!--  Xav Modif ICONEO -->
+<script type="text/javascript">
+<!--
+	document.getElementById('lastFactCreate').innerHTML = '<a href="<?php echo DOL_URL_ROOT.'/compta/facture.php?action=createLast&facid='.$lastId .'&socid='.$socId. '&origin=contrat&originid='.$idContract ?>"> --- Créer la facture suivante automatiquement ---</a>';
+//-->
+</script>
+<!--  Xav Modif ICONEO -->
 <!-- END PHP TEMPLATE -->

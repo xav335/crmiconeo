@@ -892,6 +892,52 @@ class Facture extends CommonInvoice
 	}
 
 
+	//Xav modif
+	
+	function createFromLastFact($periodicity)
+	{
+	    global $user;
+	    // Charge facture source
+	    $facture=new Facture($this->db);
+	
+	    $facture->fk_facture_source = $this->fk_facture_source;
+	    $facture->type                 = $this->type;
+	    $facture->socid             = $this->socid;
+	    $facture->date              = strtotime($periodicity,$this->date);
+	    $facture->note_public       = $this->note_public;
+	    $facture->note_private      = $this->note_private;
+	    $facture->ref_client        = $this->ref_client;
+	    $facture->modelpdf          = $this->modelpdf;
+	    $facture->fk_project        = $this->fk_project;
+	    $facture->cond_reglement_id = $this->cond_reglement_id;
+	    $facture->mode_reglement_id = $this->mode_reglement_id;
+	    $facture->remise_absolue    = $this->remise_absolue;
+	    $facture->remise_percent    = $this->remise_percent;
+	
+	    $facture->origin            = $this->origin;
+	    $facture->origin_id            = $this->origin_id;
+	    $facture->linked_objects    = $this->linked_objects;
+	
+	    $facture->lines                = $this->lines;    // Tableau des lignes de factures
+	    $facture->products            = $this->lines;    // Tant que products encore utilise
+	
+	
+	    dol_syslog(get_class($this)."::createLastFromFact id=".$id." socid=".$this->socid." nboflines=".count($facture->lines));
+	    $facid = $facture->create($user);
+	    if ($facid <= 0)
+	    {
+	        $this->error=$facture->error;
+	        $this->errors=$facture->errors;
+	    }
+	
+	    //A retirer si on ne veut pas valider
+	    $facture->validate($user);
+	
+	    return $facid;
+	}
+	//fin Xav modif
+	
+	
 	/**
 	 *		Load an object from its id and create a new one in database
 	 *

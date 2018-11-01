@@ -114,7 +114,7 @@ $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action
 include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not includ_once
 
 // Action createLast object
-// xav modif
+// xav modif ICONEO
 if ($action == 'createLast') {
     if (! empty($origin) && ! empty($originid))
     {
@@ -131,7 +131,7 @@ if ($action == 'createLast') {
     $result = $object->createFromLastFact($periodicity);
     
     if ($result > 0) {
-        header("Location: " . DOL_URL_ROOT .'/contrat/fiche.php?id='.$originid );
+        header("Location: " . DOL_URL_ROOT .'/contrat/card.php?id='.$originid );
         exit();
     } else {
         setEventMessage($object->error, 'errors');
@@ -139,7 +139,7 @@ if ($action == 'createLast') {
     }
     
 }
-// fin xav modif
+// fin xav modif ICONEO
 
 
 // Action clone object
